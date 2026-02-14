@@ -2,75 +2,181 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Happy Valentine's Day</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ladau ❤️</title>
 
 <style>
 body {
   margin: 0;
-  background: #ffe6e6;
+  background: linear-gradient(to bottom right, #ffccd5, #ffe6e6);
+  font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* Mobile app container */
+.app {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
+
+.header {
+  background: #ff4d6d;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.content {
+  padding: 25px;
   text-align: center;
 }
 
-.card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  width: 320px;
+button {
+  border: none;
+  padding: 14px 20px;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 8px;
+  width: 120px;
 }
 
-.heart {
-  font-size: 60px;
-  animation: beat 1s infinite;
-  color: red;
-}
+.yesBtn { background: #ff4d6d; color: white; }
+.noBtn { background: #999; color: white; }
 
-@keyframes beat {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.2); }
-  40% { transform: scale(1); }
-  60% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
+#loveScreen { display: none; }
+#surpriseMsg { display: none; margin-top: 15px; color: #ff2e63; }
 
-#typing {
-  font-size: 20px;
+/* Love meter */
+.meter {
+  width: 100%;
+  height: 20px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
   margin-top: 15px;
-  min-height: 30px;
+}
+
+.fill {
+  height: 100%;
+  width: 0%;
+  background: #ff4d6d;
+  transition: width 0.2s;
+}
+
+.percent {
+  font-size: 22px;
+  color: #ff4d6d;
+  margin-top: 8px;
+}
+
+/* floating hearts */
+.heart {
+  position: fixed;
+  color: red;
+  animation: float 5s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-  <h1>Happy Valentine's Day Ladau ❤️</h1>
-  <div class="heart">❤</div>
-  <div id="typing"></div>
+<div class="app">
+
+  <div class="header">Love App ❤️</div>
+
+  <div class="content" id="questionScreen">
+    <h2>Will you be my Valentine, Ladau?</h2>
+    <button class="yesBtn" onclick="showLove()">Yes</button>
+    <button class="noBtn" onmouseover="moveNo()">No</button>
+  </div>
+
+  <div class="content" id="loveScreen">
+    <h2>I love you Ladau ❤️</h2>
+
+    <p id="daysCounter"></p>
+
+    <div class="meter">
+      <div class="fill" id="fill"></div>
+    </div>
+    <div class="percent" id="percent">0%</div>
+    <p>How much I love you</p>
+
+    <button onclick="reveal()">Tap for surprise</button>
+    <div id="surpriseMsg">
+      You are the best thing in my life ❤️
+    </div>
+  </div>
+
 </div>
 
-<!-- Typing animation -->
 <script>
-const text = "I love you so much Ladau... You are my happiness ❤️";
-let i = 0;
-
-function typingEffect() {
-  if (i < text.length) {
-    document.getElementById("typing").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typingEffect, 60);
-  }
+function showLove() {
+  document.getElementById("questionScreen").style.display = "none";
+  document.getElementById("loveScreen").style.display = "block";
+  animateMeter();
+  hearts();
+  calculateDays();
 }
 
-typingEffect();
+function animateMeter() {
+  let value = 0;
+  const interval = setInterval(() => {
+    if (value >= 100) clearInterval(interval);
+    value++;
+    document.getElementById("percent").innerText = value + "%";
+    document.getElementById("fill").style.width = value + "%";
+  }, 25);
+}
+
+function moveNo() {
+  const btn = document.querySelector(".noBtn");
+  btn.style.position = "absolute";
+  btn.style.top = Math.random() * 70 + "%";
+  btn.style.left = Math.random() * 60 + "%";
+}
+
+function hearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (18 + Math.random()*20) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+  }, 300);
+}
+
+function reveal() {
+  document.getElementById("surpriseMsg").style.display = "block";
+}
+
+function calculateDays() {
+  const startDate = new Date("May 25, 2024");
+  const today = new Date();
+  const diff = today - startDate;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  document.getElementById("daysCounter").innerText =
+    "Together for " + days + " days ❤️";
+}
 </script>
 
-<!-- Background music (Tu Jaane Na) -->
+<!-- Tu Jaane Na music -->
 <iframe width="0" height="0"
 src="https://www.youtube.com/embed/P8PWN1OmZOA?autoplay=1&loop=1&playlist=P8PWN1OmZOA"
 frameborder="0" allow="autoplay">
