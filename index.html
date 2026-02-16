@@ -7,48 +7,113 @@
 
 <style>
 body{
-  margin:0;
-  font-family:Arial;
-  background:linear-gradient(#ffd6e0,#ffeef2);
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+background:linear-gradient(135deg,#ffd6e0,#ffeef2);
+overflow-x:hidden;
 }
+
 .app{
-  max-width:420px;
-  margin:auto;
-  background:white;
-  min-height:100vh;
+max-width:420px;
+margin:auto;
+min-height:100vh;
+padding:18px;
+box-sizing:border-box;
 }
-.header{
-  background:#ff4d6d;
-  color:white;
-  text-align:center;
-  padding:14px;
-  font-weight:bold;
+
+/* screens */
+.screen{
+display:none;
+animation:fadeIn 0.5s ease;
 }
-.screen{display:none;padding:22px;text-align:center;}
-.active{display:block;}
+
+.active{
+display:block;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* card UI */
+.card{
+background:white;
+padding:24px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.12);
+text-align:center;
+}
+
+/* buttons */
 button{
-  padding:12px 18px;
-  border:none;
-  border-radius:10px;
-  background:#ff4d6d;
-  color:white;
-  margin:8px;
-  font-size:16px;
+padding:14px 18px;
+border:none;
+border-radius:14px;
+background:#ff4d6d;
+color:white;
+margin:8px;
+font-size:16px;
+cursor:pointer;
+transition:all 0.2s ease;
 }
-.noBtn{background:#999;position:relative;}
 
+button:active{
+transform:scale(0.95);
+}
+
+/* funny popup */
+#funnyBox{
+display:none;
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+background:#ff4d6d;
+color:white;
+padding:12px 18px;
+border-radius:20px;
+animation:pop 0.4s ease;
+}
+
+@keyframes pop{
+from{transform:translate(-50%,20px);opacity:0;}
+to{transform:translate(-50%,0);opacity:1;}
+}
+
+/* kiss animation */
 .kiss{
-  position:fixed;
-  font-size:28px;
-  animation:up 2s forwards;
-}
-@keyframes up{
-  from{transform:translateY(0);opacity:1;}
-  to{transform:translateY(-200px);opacity:0;}
+position:fixed;
+font-size:28px;
+animation:floatUp 2s forwards;
 }
 
-@keyframes fall{
-to{transform:translateY(100vh);opacity:0;}
+@keyframes floatUp{
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-200px);opacity:0;}
+}
+
+/* heart game */
+#gameArea{
+height:240px;
+background:#fff0f5;
+border-radius:16px;
+position:relative;
+}
+
+/* tap game */
+.tapCircle{
+width:60px;
+height:60px;
+background:#ff4d6d;
+border-radius:50%;
+position:absolute;
+animation:popIn 0.2s ease;
+}
+
+@keyframes popIn{
+from{transform:scale(0);}
+to{transform:scale(1);}
 }
 </style>
 </head>
@@ -56,90 +121,87 @@ to{transform:translateY(100vh);opacity:0;}
 <body>
 
 <div class="app">
-<div class="header">Love App ❤️</div>
 
 <div id="s1" class="screen active">
+<div class="card">
 <h2>Hi Laduaaaa / Cutie Pie ❤️</h2>
-<p>I made something for you…</p>
+<p>Tap to start</p>
 <button onclick="startApp()">Start</button>
+</div>
 </div>
 
 <div id="s2" class="screen">
+<div class="card">
 <h2>Will you be my Valentine?</h2>
 <button onclick="next()">Yes</button>
-<button class="noBtn" onmouseover="moveNo()">No</button>
+<button onclick="funnyNo()">No</button>
+</div>
 </div>
 
 <div id="s3" class="screen">
-<h2>You are very cute 😌</h2>
-<button onclick="next()">Continue</button>
-</div>
-
-<div id="s4" class="screen">
-<h2>I miss you every day ❤️</h2>
-<button onclick="next()">Next</button>
-</div>
-
-<div id="s5" class="screen">
-<h2>Memory check ❤️</h2>
+<div class="card">
+<h2>Memory Quiz ❤️</h2>
 <p>When did we meet?</p>
 <button onclick="wrong()">2023</button>
 <button onclick="correct()">25 May 2024</button>
 </div>
+</div>
+
+<div id="s4" class="screen">
+<div class="card">
+<h2>Catch the hearts ❤️</h2>
+<p>Score: <span id="score">0</span></p>
+<div id="gameArea"></div>
+</div>
+</div>
+
+<div id="s5" class="screen">
+<div class="card">
+<h2>Tap Game 😄</h2>
+<p>Score: <span id="tapScore">0</span></p>
+<div id="tapArea" style="height:240px;background:#fdf2f5;border-radius:16px;position:relative;"></div>
+</div>
+</div>
 
 <div id="s6" class="screen">
-<h2>Mini Love Game ❤️</h2>
-<p>Tap 5 hearts</p>
-<p>Score: <span id="score">0</span></p>
-<div id="gameArea" style="height:250px;background:#fff0f5;border-radius:10px;"></div>
+<div class="card">
+<h2>Surprise ❤️</h2>
+<button onclick="reveal()">Tap me</button>
+<p id="surprise" style="display:none;">You are my happiness forever.</p>
+<button onclick="next()">Next</button>
+</div>
 </div>
 
 <div id="s7" class="screen">
-<h2>Emotional message</h2>
-<p>You make my world calm, happy and meaningful.</p>
-<button onclick="next()">Next</button>
-</div>
-
-<div id="s8" class="screen">
-<h2>Naughty question 😄</h2>
-<p>Who loves more?</p>
-<button onclick="next()">You</button>
-<button onclick="next()">Me</button>
-</div>
-
-<div id="s9" class="screen">
-<h2>Surprise ❤️</h2>
-<button onclick="reveal()">Tap me</button>
-<p id="surprise" style="display:none;">
-You are my happiness forever.
-</p>
-<button onclick="next()">Next</button>
-</div>
-
-<div id="s10" class="screen">
+<div class="card">
 <h2>I love you Laduaaaa / Cutie Pie ❤️</h2>
 <p id="days"></p>
 <button onclick="next()">Finish</button>
 </div>
+</div>
 
-<div id="s11" class="screen">
+<div id="s8" class="screen">
+<div class="card">
 <h1 style="color:#ff4d6d;">Forever Us ❤️</h1>
-<p>No matter what happens, I will always choose you.</p>
-<button onclick="replay()">Replay ❤️</button>
+<button onclick="replay()">Replay</button>
+</div>
 </div>
 
 </div>
+
+<div id="funnyBox">No option not available 😄</div>
 
 <audio id="song" loop>
-<source src="https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8a4d9c0e3.mp3">
 </audio>
 
 <script>
 let current=1;
 let score=0;
+let tapScore=0;
 
 function startApp(){
-document.getElementById("song").play();
+document.getElementById("song").play().catch(()=>{});
 next();
 }
 
@@ -149,27 +211,17 @@ current++;
 document.getElementById("s"+current).classList.add("active");
 kiss();
 counter();
-
-if(current===11){
-confetti();
-}
 }
 
-function moveNo(){
-const b=document.querySelector(".noBtn");
-b.style.position="absolute";
-b.style.top=Math.random()*70+"%";
-b.style.left=Math.random()*60+"%";
+function funnyNo(){
+const box=document.getElementById("funnyBox");
+box.style.display="block";
+setTimeout(()=>box.style.display="none",1500);
+kiss();
 }
 
-function correct(){
-alert("Correct ❤️");
-next();
-}
-
-function wrong(){
-alert("Try again 😄");
-}
+function correct(){ next(); }
+function wrong(){ alert("Try again 😄"); }
 
 function reveal(){
 document.getElementById("surprise").style.display="block";
@@ -196,28 +248,12 @@ const el=document.getElementById("days");
 if(el)el.innerText="Together for "+days+" days ❤️";
 }
 
-function confetti(){
-for(let i=0;i<80;i++){
-const c=document.createElement("div");
-c.innerHTML="❤️";
-c.style.position="fixed";
-c.style.left=Math.random()*100+"vw";
-c.style.top="-10px";
-c.style.fontSize="20px";
-c.style.animation="fall 3s linear forwards";
-document.body.appendChild(c);
-setTimeout(()=>c.remove(),3000);
-}
-}
+function replay(){ location.reload(); }
 
-function replay(){
-location.reload();
-}
-
-/* mini game */
+/* heart game */
 const area=document.getElementById("gameArea");
 setInterval(()=>{
-if(!area||current!==6)return;
+if(!area||current!==4)return;
 const h=document.createElement("div");
 h.innerHTML="❤️";
 h.style.position="absolute";
@@ -232,6 +268,24 @@ if(score>=5)next();
 area.appendChild(h);
 setTimeout(()=>h.remove(),1500);
 },700);
+
+/* tap game */
+const tapArea=document.getElementById("tapArea");
+setInterval(()=>{
+if(!tapArea||current!==5)return;
+const c=document.createElement("div");
+c.className="tapCircle";
+c.style.left=Math.random()*80+"%";
+c.style.top=Math.random()*70+"%";
+c.onclick=()=>{
+tapScore++;
+document.getElementById("tapScore").innerText=tapScore;
+c.remove();
+if(tapScore>=5)next();
+};
+tapArea.appendChild(c);
+setTimeout(()=>c.remove(),1500);
+},900);
 </script>
 
 </body>
