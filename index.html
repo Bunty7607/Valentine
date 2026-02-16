@@ -40,20 +40,24 @@ font-size:16px;
 cursor:pointer;
 }
 
-/* heart explosion */
+/* typing */
+#typing{min-height:30px;font-size:20px;}
+
+/* confetti */
 .confetti{
 position:fixed;
 font-size:20px;
 animation:explode 1.2s ease-out forwards;
 }
 @keyframes explode{
-to{
-transform:translate(var(--x),var(--y));
-opacity:0;
-}
+to{transform:translate(var(--x),var(--y));opacity:0;}
 }
 
-/* game areas */
+/* proposal */
+.ring{font-size:60px;animation:pop 1s ease;}
+@keyframes pop{0%{transform:scale(0);}100%{transform:scale(1);}}
+
+/* games */
 .area{
 height:260px;
 background:#fff0f5;
@@ -62,17 +66,16 @@ position:relative;
 overflow:hidden;
 }
 
-.heart,.circle{
+.circle{
+width:60px;height:60px;border-radius:50%;
+background:#ff4d6d;
+position:absolute;
+}
+
+.heart{
 position:absolute;
 font-size:26px;
 cursor:pointer;
-}
-
-.circle{
-width:60px;
-height:60px;
-border-radius:50%;
-background:#ff4d6d;
 }
 
 /* slider */
@@ -85,15 +88,16 @@ background:#ff4d6d;
 
 <div class="app">
 
-<!-- Start -->
+<!-- INTRO -->
 <div id="s0" class="screen active">
 <div class="card">
-<h2>Hi Laduaaaa / Cutie Pie ❤️</h2>
-<button onclick="next()">Start</button>
+<h2>Laduaaaa / Cutie Pie ❤️</h2>
+<div id="typing"></div>
+<button onclick="startApp()">Start</button>
 </div>
 </div>
 
-<!-- Valentine question -->
+<!-- VALENTINE -->
 <div id="s1" class="screen">
 <div class="card">
 <h2>Will you be my Valentine?</h2>
@@ -102,25 +106,17 @@ background:#ff4d6d;
 </div>
 </div>
 
-<!-- Who loves more -->
+<!-- WHO LOVES MORE -->
 <div id="s2" class="screen">
 <div class="card">
 <h2>Who loves more? 😄</h2>
 <button onclick="next()">Me</button>
-<button onclick="alert('Wrong answer 😄 Try again')">You</button>
+<button onclick="alert('Wrong answer 😄')">You</button>
 </div>
 </div>
 
-<!-- Always be with me -->
+<!-- PROMISE -->
 <div id="s3" class="screen">
-<div class="card">
-<h2>Will you be with me always?</h2>
-<button onclick="next()">Yes ❤️</button>
-</div>
-</div>
-
-<!-- Promise screen -->
-<div id="s4" class="screen">
 <div class="card">
 <h2>My Promises ❤️</h2>
 <p>I will support you</p>
@@ -131,22 +127,20 @@ background:#ff4d6d;
 </div>
 </div>
 
-<!-- Why I love you slider -->
-<div id="s5" class="screen">
+<!-- WHY I LOVE YOU -->
+<div id="s4" class="screen">
 <div class="card">
 <h2>Why I love you ❤️</h2>
-
 <div id="slide1" class="slide active">Your smile</div>
 <div id="slide2" class="slide">Your kindness</div>
 <div id="slide3" class="slide">Your voice</div>
 <div id="slide4" class="slide">Everything about you</div>
-
 <button onclick="nextSlide()">Next</button>
 </div>
 </div>
 
-<!-- Game 1 -->
-<div id="s6" class="screen">
+<!-- GAME 1 -->
+<div id="s5" class="screen">
 <div class="card">
 <h2>Catch hearts ❤️</h2>
 <p>Score: <span id="score1">0</span></p>
@@ -154,8 +148,8 @@ background:#ff4d6d;
 </div>
 </div>
 
-<!-- Game 2 -->
-<div id="s7" class="screen">
+<!-- GAME 2 -->
+<div id="s6" class="screen">
 <div class="card">
 <h2>Tap circles 😄</h2>
 <p>Score: <span id="score2">0</span></p>
@@ -163,8 +157,8 @@ background:#ff4d6d;
 </div>
 </div>
 
-<!-- Game 3 -->
-<div id="s8" class="screen">
+<!-- GAME 3 -->
+<div id="s7" class="screen">
 <div class="card">
 <h2>Catch falling hearts 💕</h2>
 <p>Score: <span id="score3">0</span></p>
@@ -172,7 +166,16 @@ background:#ff4d6d;
 </div>
 </div>
 
-<!-- Ending -->
+<!-- FINAL PROPOSAL -->
+<div id="s8" class="screen">
+<div class="card">
+<div class="ring">💍</div>
+<h2>Will you stay with me forever?</h2>
+<button onclick="next()">Yes ❤️</button>
+</div>
+</div>
+
+<!-- END -->
 <div id="s9" class="screen">
 <div class="card">
 <h2>I love you ❤️</h2>
@@ -183,10 +186,32 @@ background:#ff4d6d;
 
 </div>
 
+<!-- MUSIC -->
+<div id="music" style="display:none;">
+<iframe width="0" height="0"
+src="https://www.youtube.com/embed/8W0cS4N4G8w?autoplay=1&loop=1&playlist=8W0cS4N4G8w"
+allow="autoplay">
+</iframe>
+</div>
+
 <script>
-let current=0;
-let slide=1;
-let s1=0,s2=0,s3=0;
+let current=0,slide=1,s1=0,s2=0,s3=0;
+
+/* typing intro */
+const text="I love you more than words can say...";
+let i=0;
+function type(){
+if(i<text.length){
+typing.innerHTML+=text.charAt(i);
+i++; setTimeout(type,50);
+}
+}
+type();
+
+function startApp(){
+music.style.display="block";
+next();
+}
 
 function next(){
 document.getElementById("s"+current).classList.remove("active");
@@ -219,7 +244,7 @@ if(slide>4){ next(); return; }
 document.getElementById("slide"+slide).classList.add("active");
 }
 
-/* love counter */
+/* counter */
 function counter(){
 const start=new Date("May 25, 2024");
 const today=new Date();
@@ -230,7 +255,7 @@ if(el)el.innerText="Together for "+days+" days ❤️";
 
 /* GAME 1 */
 setInterval(()=>{
-if(current!==6)return;
+if(current!==5)return;
 const h=document.createElement("div");
 h.className="heart";
 h.innerHTML="❤️";
@@ -247,7 +272,7 @@ h.onclick=()=>{s1++;score1.innerText=s1;h.remove();clearInterval(fall);if(s1>=5)
 
 /* GAME 2 */
 setInterval(()=>{
-if(current!==7)return;
+if(current!==6)return;
 const c=document.createElement("div");
 c.className="circle";
 c.style.left=Math.random()*80+"%";
@@ -259,7 +284,7 @@ setTimeout(()=>c.remove(),1500);
 
 /* GAME 3 */
 setInterval(()=>{
-if(current!==8)return;
+if(current!==7)return;
 const h=document.createElement("div");
 h.className="heart";
 h.innerHTML="💖";
@@ -274,6 +299,5 @@ if(pos>240){h.remove();clearInterval(fall);}
 h.onclick=()=>{s3++;score3.innerText=s3;h.remove();clearInterval(fall);if(s3>=5)next();}
 },900);
 </script>
-
 </body>
 </html>
