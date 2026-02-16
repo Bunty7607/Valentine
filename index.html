@@ -9,45 +9,36 @@
 body{
 margin:0;
 font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-background:linear-gradient(135deg,#ffd6e0,#ffeef2);
+background:#ffeef2;
 overflow-x:hidden;
 }
 
 .app{
 max-width:420px;
 margin:auto;
-min-height:100vh;
 padding:18px;
-box-sizing:border-box;
+position:relative;
+z-index:2;
 }
 
-/* screens */
-.screen{
-display:none;
-animation:fadeIn 0.5s ease;
+.screen{display:none;}
+.active{display:block;animation:fade 0.5s ease;}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
 }
 
-.active{
-display:block;
-}
-
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-/* card UI */
 .card{
 background:white;
-padding:24px;
+padding:22px;
 border-radius:20px;
 box-shadow:0 10px 30px rgba(0,0,0,0.12);
 text-align:center;
 }
 
-/* buttons */
 button{
-padding:14px 18px;
+padding:14px;
 border:none;
 border-radius:14px;
 background:#ff4d6d;
@@ -55,65 +46,60 @@ color:white;
 margin:8px;
 font-size:16px;
 cursor:pointer;
-transition:all 0.2s ease;
 }
 
-button:active{
-transform:scale(0.95);
+/* promises animation */
+.promise{
+opacity:0;
+transform:translateY(10px);
+animation:show 0.6s forwards;
+}
+@keyframes show{
+to{opacity:1;transform:translateY(0);}
 }
 
-/* funny popup */
-#funnyBox{
+/* slider */
+.slide{
 display:none;
+font-size:18px;
+}
+.slide.active{display:block;}
+
+/* timeline */
+.timeline{
+text-align:left;
+}
+.timeline div{
+margin:10px 0;
+padding-left:10px;
+border-left:3px solid #ff4d6d;
+}
+
+/* particle hearts */
+.particle{
 position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%);
-background:#ff4d6d;
-color:white;
-padding:12px 18px;
-border-radius:20px;
-animation:pop 0.4s ease;
+font-size:18px;
+animation:float 6s linear infinite;
+opacity:0.6;
+z-index:0;
+}
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
 }
 
-@keyframes pop{
-from{transform:translate(-50%,20px);opacity:0;}
-to{transform:translate(-50%,0);opacity:1;}
-}
-
-/* kiss animation */
-.kiss{
-position:fixed;
-font-size:28px;
-animation:floatUp 2s forwards;
-}
-
-@keyframes floatUp{
-from{transform:translateY(0);opacity:1;}
-to{transform:translateY(-200px);opacity:0;}
-}
-
-/* heart game */
-#gameArea{
+/* games */
+#gameArea,#tapArea{
 height:240px;
 background:#fff0f5;
 border-radius:16px;
 position:relative;
+overflow:hidden;
 }
 
-/* tap game */
 .tapCircle{
-width:60px;
-height:60px;
-background:#ff4d6d;
-border-radius:50%;
-position:absolute;
-animation:popIn 0.2s ease;
-}
-
-@keyframes popIn{
-from{transform:scale(0);}
-to{transform:scale(1);}
+width:60px;height:60px;border-radius:50%;
+background:#ff4d6d;position:absolute;
 }
 </style>
 </head>
@@ -124,9 +110,9 @@ to{transform:scale(1);}
 
 <div id="s1" class="screen active">
 <div class="card">
-<h2>Hi Laduaaaa / Cutie Pie ❤️</h2>
-<p>Tap to start</p>
-<button onclick="startApp()">Start</button>
+<h3>Our Chat ❤️</h3>
+<p>Hi Cutie Pie… I made something for you.</p>
+<button onclick="startApp()">Continue</button>
 </div>
 </div>
 
@@ -140,7 +126,7 @@ to{transform:scale(1);}
 
 <div id="s3" class="screen">
 <div class="card">
-<h2>Memory Quiz ❤️</h2>
+<h2>Memory Quiz</h2>
 <p>When did we meet?</p>
 <button onclick="wrong()">2023</button>
 <button onclick="correct()">25 May 2024</button>
@@ -149,7 +135,7 @@ to{transform:scale(1);}
 
 <div id="s4" class="screen">
 <div class="card">
-<h2>Catch the hearts ❤️</h2>
+<h2>Catch hearts ❤️</h2>
 <p>Score: <span id="score">0</span></p>
 <div id="gameArea"></div>
 </div>
@@ -157,22 +143,46 @@ to{transform:scale(1);}
 
 <div id="s5" class="screen">
 <div class="card">
-<h2>Tap Game 😄</h2>
+<h2>Tap circles 😄</h2>
 <p>Score: <span id="tapScore">0</span></p>
-<div id="tapArea" style="height:240px;background:#fdf2f5;border-radius:16px;position:relative;"></div>
+<div id="tapArea"></div>
 </div>
 </div>
 
 <div id="s6" class="screen">
 <div class="card">
-<h2>Surprise ❤️</h2>
-<button onclick="reveal()">Tap me</button>
-<p id="surprise" style="display:none;">You are my happiness forever.</p>
+<h2>Future Promises ❤️</h2>
+<p class="promise" style="animation-delay:0.3s;">I will support you</p>
+<p class="promise" style="animation-delay:0.8s;">I will protect you</p>
+<p class="promise" style="animation-delay:1.3s;">I will make you smile</p>
+<p class="promise" style="animation-delay:1.8s;">I will love you forever</p>
 <button onclick="next()">Next</button>
 </div>
 </div>
 
 <div id="s7" class="screen">
+<div class="card">
+<h2>Why I love you ❤️</h2>
+<div id="slide1" class="slide active">Your smile</div>
+<div id="slide2" class="slide">Your kindness</div>
+<div id="slide3" class="slide">Your voice</div>
+<div id="slide4" class="slide">Everything about you</div>
+<button onclick="nextSlide()">Next</button>
+</div>
+</div>
+
+<div id="s8" class="screen">
+<div class="card timeline">
+<h2>Our Timeline ❤️</h2>
+<div>25 May 2024 — We met</div>
+<div>First long conversation</div>
+<div>First time we laughed together</div>
+<div>Today — Still together ❤️</div>
+<button onclick="next()">Next</button>
+</div>
+</div>
+
+<div id="s9" class="screen">
 <div class="card">
 <h2>I love you Laduaaaa / Cutie Pie ❤️</h2>
 <p id="days"></p>
@@ -180,28 +190,28 @@ to{transform:scale(1);}
 </div>
 </div>
 
-<div id="s8" class="screen">
+<div id="s10" class="screen">
 <div class="card">
-<h1 style="color:#ff4d6d;">Forever Us ❤️</h1>
+<h1>Forever Us ❤️</h1>
 <button onclick="replay()">Replay</button>
 </div>
 </div>
 
 </div>
 
-<div id="funnyBox">No option not available 😄</div>
-
-<audio id="song" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8a4d9c0e3.mp3">
-</audio>
+<!-- hidden music -->
+<div id="music" style="display:none;">
+<iframe width="0" height="0"
+src="https://www.youtube.com/embed/P8PWN1OmZOA?autoplay=1&loop=1&playlist=P8PWN1OmZOA"
+allow="autoplay">
+</iframe>
+</div>
 
 <script>
-let current=1;
-let score=0;
-let tapScore=0;
+let current=1,score=0,tapScore=0,slide=1;
 
 function startApp(){
-document.getElementById("song").play().catch(()=>{});
+document.getElementById("music").style.display="block";
 next();
 }
 
@@ -209,36 +219,12 @@ function next(){
 document.getElementById("s"+current).classList.remove("active");
 current++;
 document.getElementById("s"+current).classList.add("active");
-kiss();
 counter();
 }
 
-function funnyNo(){
-const box=document.getElementById("funnyBox");
-box.style.display="block";
-setTimeout(()=>box.style.display="none",1500);
-kiss();
-}
-
+function funnyNo(){ alert("No option disabled 😄"); }
 function correct(){ next(); }
 function wrong(){ alert("Try again 😄"); }
-
-function reveal(){
-document.getElementById("surprise").style.display="block";
-kiss();
-}
-
-function kiss(){
-for(let i=0;i<4;i++){
-const k=document.createElement("div");
-k.className="kiss";
-k.innerHTML="😘";
-k.style.left=Math.random()*90+"vw";
-k.style.bottom="0px";
-document.body.appendChild(k);
-setTimeout(()=>k.remove(),2000);
-}
-}
 
 function counter(){
 const start=new Date("May 25, 2024");
@@ -250,29 +236,46 @@ if(el)el.innerText="Together for "+days+" days ❤️";
 
 function replay(){ location.reload(); }
 
-/* heart game */
-const area=document.getElementById("gameArea");
+/* slider */
+function nextSlide(){
+document.getElementById("slide"+slide).classList.remove("active");
+slide++;
+if(slide>4){ next(); return; }
+document.getElementById("slide"+slide).classList.add("active");
+}
+
+/* particle hearts */
 setInterval(()=>{
-if(!area||current!==4)return;
+const h=document.createElement("div");
+h.className="particle";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},800);
+
+/* heart game */
+setInterval(()=>{
+if(current!==4)return;
 const h=document.createElement("div");
 h.innerHTML="❤️";
 h.style.position="absolute";
 h.style.left=Math.random()*90+"%";
-h.style.top=Math.random()*90+"%";
+h.style.top="0px";
+h.style.transition="top 1.5s linear";
+document.getElementById("gameArea").appendChild(h);
+setTimeout(()=>h.style.top="200px",50);
+
 h.onclick=()=>{
-score++;
-document.getElementById("score").innerText=score;
-h.remove();
-if(score>=5)next();
+score++;document.getElementById("score").innerText=score;
+h.remove(); if(score>=5)next();
 };
-area.appendChild(h);
-setTimeout(()=>h.remove(),1500);
+setTimeout(()=>h.remove(),2000);
 },700);
 
 /* tap game */
-const tapArea=document.getElementById("tapArea");
 setInterval(()=>{
-if(!tapArea||current!==5)return;
+if(current!==5)return;
 const c=document.createElement("div");
 c.className="tapCircle";
 c.style.left=Math.random()*80+"%";
@@ -280,10 +283,9 @@ c.style.top=Math.random()*70+"%";
 c.onclick=()=>{
 tapScore++;
 document.getElementById("tapScore").innerText=tapScore;
-c.remove();
-if(tapScore>=5)next();
+c.remove(); if(tapScore>=5)next();
 };
-tapArea.appendChild(c);
+document.getElementById("tapArea").appendChild(c);
 setTimeout(()=>c.remove(),1500);
 },900);
 </script>
