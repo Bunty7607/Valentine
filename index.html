@@ -37,6 +37,7 @@ background:#ff4d6d;
 color:white;
 margin:8px;
 font-size:16px;
+cursor:pointer;
 }
 
 /* heart explosion */
@@ -46,10 +47,13 @@ font-size:20px;
 animation:explode 1.2s ease-out forwards;
 }
 @keyframes explode{
-to{transform:translate(var(--x),var(--y));opacity:0;}
+to{
+transform:translate(var(--x),var(--y));
+opacity:0;
+}
 }
 
-/* game */
+/* heart game */
 #gameArea{
 height:260px;
 background:#fff0f5;
@@ -57,9 +61,10 @@ border-radius:16px;
 position:relative;
 overflow:hidden;
 }
+
 .heart{
 position:absolute;
-font-size:26px;
+font-size:28px;
 cursor:pointer;
 }
 </style>
@@ -69,17 +74,17 @@ cursor:pointer;
 
 <div class="app">
 
-<!-- START SCREEN -->
+<!-- START -->
 <div id="s0" class="screen active">
 <div class="card">
 <h2>For Laduaaaa / Cutie Pie ❤️</h2>
-
+<p>Tap Start</p>
 <button onclick="startApp()">Start</button>
 
 <br><br>
 
-<audio id="song" controls loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_2b2b9a7f04.mp3">
+<audio id="song" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_946498e0c4.mp3">
 </audio>
 
 </div>
@@ -89,7 +94,7 @@ cursor:pointer;
 <div id="s1" class="screen">
 <div class="card">
 <h2>Will you be my Valentine?</h2>
-<button onclick="explodeHearts(this);next();">Yes</button>
+<button onclick="explodeHearts(this); next();">Yes</button>
 <button onclick="alert('No option disabled 😄')">No</button>
 </div>
 </div>
@@ -119,8 +124,8 @@ let current=0;
 let score=0;
 
 function startApp(){
+document.getElementById("song").play();
 next();
-document.getElementById("song").play().catch(()=>{});
 }
 
 function next(){
@@ -146,8 +151,8 @@ for(let i=0;i<25;i++){
 const h=document.createElement("div");
 h.className="confetti";
 h.innerHTML="❤️";
-h.style.left=(rect.left+20)+"px";
-h.style.top=(rect.top+10)+"px";
+h.style.left=rect.left+"px";
+h.style.top=rect.top+"px";
 h.style.setProperty("--x",(Math.random()*200-100)+"px");
 h.style.setProperty("--y",(Math.random()*200-100)+"px");
 document.body.appendChild(h);
@@ -155,7 +160,7 @@ setTimeout(()=>h.remove(),1200);
 }
 }
 
-/* HEART GAME */
+/* HEART GAME (fixed) */
 const gameArea=document.getElementById("gameArea");
 
 setInterval(()=>{
@@ -171,13 +176,14 @@ gameArea.appendChild(heart);
 
 let pos=0;
 const fall=setInterval(()=>{
-pos+=3;
+pos+=4;
 heart.style.top=pos+"px";
+
 if(pos>240){
 heart.remove();
 clearInterval(fall);
 }
-},20);
+},25);
 
 heart.onclick=()=>{
 score++;
