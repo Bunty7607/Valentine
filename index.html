@@ -6,90 +6,49 @@
 <title>Laduaaaa / Cutie Pie ❤️</title>
 
 <style>
-body {
-  margin: 0;
-  background: #ffe6e6;
-  font-family: Arial, sans-serif;
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(#ffd6e0,#ffeef2);
+}
+.app{
+  max-width:420px;
+  margin:auto;
+  background:white;
+  min-height:100vh;
+}
+.header{
+  background:#ff4d6d;
+  color:white;
+  text-align:center;
+  padding:14px;
+  font-weight:bold;
+}
+.screen{display:none;padding:22px;text-align:center;}
+.active{display:block;}
+button{
+  padding:12px 18px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d6d;
+  color:white;
+  margin:8px;
+  font-size:16px;
+}
+.noBtn{background:#999;position:relative;}
+
+.kiss{
+  position:fixed;
+  font-size:28px;
+  animation:up 2s forwards;
+}
+@keyframes up{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-200px);opacity:0;}
 }
 
-.app {
-  max-width: 420px;
-  margin: auto;
-  background: white;
-  min-height: 100vh;
-}
-
-.header {
-  background: #ff4d6d;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.screen { display: none; padding: 20px; }
-.active { display: block; }
-
-button {
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #ff4d6d;
-  color: white;
-  margin: 5px;
-}
-
-/* Chat UI */
-.chat {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.msg {
-  padding: 10px;
-  border-radius: 12px;
-  max-width: 70%;
-  cursor: pointer;
-  position: relative;
-}
-
-.me { background: #ffccd5; align-self: flex-end; }
-.her { background: #eee; align-self: flex-start; }
-
-/* emoji reaction */
-.reaction {
-  position: absolute;
-  right: -25px;
-  top: -10px;
-  font-size: 18px;
-}
-
-/* floating kiss */
-.kiss {
-  position: fixed;
-  font-size: 28px;
-  animation: kissUp 2s linear forwards;
-}
-
-@keyframes kissUp {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-200px); opacity: 0; }
-}
-
-/* Game */
-#gameArea {
-  position: relative;
-  height: 300px;
-  background: #fff0f5;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.heart {
-  position: absolute;
-  cursor: pointer;
-  font-size: 24px;
+@keyframes fall{
+to{transform:translateY(100vh);opacity:0;}
 }
 </style>
 </head>
@@ -99,125 +58,180 @@ button {
 <div class="app">
 <div class="header">Love App ❤️</div>
 
-<!-- Screen 1 -->
-<div class="screen active" id="s1">
-  <h2>Hi Laduaaaa / Cutie Pie ❤️</h2>
-  <button onclick="next()">Start</button>
+<div id="s1" class="screen active">
+<h2>Hi Laduaaaa / Cutie Pie ❤️</h2>
+<p>I made something for you…</p>
+<button onclick="startApp()">Start</button>
 </div>
 
-<!-- Chat UI -->
-<div class="screen" id="s2">
-  <h3>Our Chat</h3>
-
-  <div class="chat">
-    <div class="msg me" onclick="react(this)">Hi Laduaaaa / Cutie Pie</div>
-    <div class="msg her" onclick="react(this)">Hello 🙂</div>
-    <div class="msg me" onclick="react(this)">I love you</div>
-    <div class="msg her" onclick="react(this)">I know 😄</div>
-    <div class="msg me" onclick="react(this)">Will you be my Valentine?</div>
-  </div>
-
-  <button onclick="sendKiss()">Send Kiss 😘</button>
-  <button onclick="next()">Yes</button>
+<div id="s2" class="screen">
+<h2>Will you be my Valentine?</h2>
+<button onclick="next()">Yes</button>
+<button class="noBtn" onmouseover="moveNo()">No</button>
 </div>
 
-<!-- Memory Quiz -->
-<div class="screen" id="s3">
-  <h3>Memory Quiz ❤️</h3>
-  <p>Where did we meet?</p>
-  <button onclick="wrong()">Instagram</button>
-  <button onclick="wrong()">School</button>
-  <button onclick="correct()">Somewhere special</button>
+<div id="s3" class="screen">
+<h2>You are very cute 😌</h2>
+<button onclick="next()">Continue</button>
 </div>
 
-<!-- Mini Game -->
-<div class="screen" id="s4">
-  <h3>Catch the hearts ❤️</h3>
-  <p>Score: <span id="score">0</span></p>
-  <div id="gameArea"></div>
-  <button onclick="next()">Next</button>
+<div id="s4" class="screen">
+<h2>I miss you every day ❤️</h2>
+<button onclick="next()">Next</button>
 </div>
 
-<!-- Final -->
-<div class="screen" id="s5">
-  <h2>I love you Laduaaaa / Cutie Pie ❤️</h2>
-  <p id="days"></p>
+<div id="s5" class="screen">
+<h2>Memory check ❤️</h2>
+<p>When did we meet?</p>
+<button onclick="wrong()">2023</button>
+<button onclick="correct()">25 May 2024</button>
+</div>
+
+<div id="s6" class="screen">
+<h2>Mini Love Game ❤️</h2>
+<p>Tap 5 hearts</p>
+<p>Score: <span id="score">0</span></p>
+<div id="gameArea" style="height:250px;background:#fff0f5;border-radius:10px;"></div>
+</div>
+
+<div id="s7" class="screen">
+<h2>Emotional message</h2>
+<p>You make my world calm, happy and meaningful.</p>
+<button onclick="next()">Next</button>
+</div>
+
+<div id="s8" class="screen">
+<h2>Naughty question 😄</h2>
+<p>Who loves more?</p>
+<button onclick="next()">You</button>
+<button onclick="next()">Me</button>
+</div>
+
+<div id="s9" class="screen">
+<h2>Surprise ❤️</h2>
+<button onclick="reveal()">Tap me</button>
+<p id="surprise" style="display:none;">
+You are my happiness forever.
+</p>
+<button onclick="next()">Next</button>
+</div>
+
+<div id="s10" class="screen">
+<h2>I love you Laduaaaa / Cutie Pie ❤️</h2>
+<p id="days"></p>
+<button onclick="next()">Finish</button>
+</div>
+
+<div id="s11" class="screen">
+<h1 style="color:#ff4d6d;">Forever Us ❤️</h1>
+<p>No matter what happens, I will always choose you.</p>
+<button onclick="replay()">Replay ❤️</button>
 </div>
 
 </div>
+
+<audio id="song" loop>
+<source src="https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav">
+</audio>
 
 <script>
-let current = 1;
+let current=1;
+let score=0;
 
-function next() {
-  document.getElementById("s"+current).classList.remove("active");
-  current++;
-  document.getElementById("s"+current).classList.add("active");
-  counter();
+function startApp(){
+document.getElementById("song").play();
+next();
 }
 
-/* Emoji reaction */
-function react(el) {
-  if (el.querySelector(".reaction")) return;
-  const r = document.createElement("span");
-  r.className = "reaction";
-  r.innerHTML = "❤️";
-  el.appendChild(r);
+function next(){
+document.getElementById("s"+current).classList.remove("active");
+current++;
+document.getElementById("s"+current).classList.add("active");
+kiss();
+counter();
+
+if(current===11){
+confetti();
+}
 }
 
-/* Kiss animation */
-function sendKiss() {
-  for (let i = 0; i < 6; i++) {
-    const kiss = document.createElement("div");
-    kiss.className = "kiss";
-    kiss.innerHTML = "😘";
-    kiss.style.left = Math.random()*90 + "vw";
-    kiss.style.bottom = "0px";
-    document.body.appendChild(kiss);
-    setTimeout(()=>kiss.remove(),2000);
-  }
+function moveNo(){
+const b=document.querySelector(".noBtn");
+b.style.position="absolute";
+b.style.top=Math.random()*70+"%";
+b.style.left=Math.random()*60+"%";
 }
 
-/* Quiz */
-function correct() {
-  alert("Correct ❤️");
-  next();
+function correct(){
+alert("Correct ❤️");
+next();
 }
 
-function wrong() {
-  alert("Nooo 😄 Try again");
+function wrong(){
+alert("Try again 😄");
 }
 
-/* Love counter */
-function counter() {
-  const startDate = new Date("May 25, 2024");
-  const today = new Date();
-  const days = Math.floor((today - startDate)/(1000*60*60*24));
-  const el = document.getElementById("days");
-  if (el) el.innerText = "Together for " + days + " days ❤️";
+function reveal(){
+document.getElementById("surprise").style.display="block";
+kiss();
 }
 
-/* Mini heart game */
-let score = 0;
-const area = document.getElementById("gameArea");
+function kiss(){
+for(let i=0;i<4;i++){
+const k=document.createElement("div");
+k.className="kiss";
+k.innerHTML="😘";
+k.style.left=Math.random()*90+"vw";
+k.style.bottom="0px";
+document.body.appendChild(k);
+setTimeout(()=>k.remove(),2000);
+}
+}
 
-setInterval(() => {
-  if (!area) return;
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random()*90 + "%";
-  heart.style.top = Math.random()*90 + "%";
+function counter(){
+const start=new Date("May 25, 2024");
+const today=new Date();
+const days=Math.floor((today-start)/(1000*60*60*24));
+const el=document.getElementById("days");
+if(el)el.innerText="Together for "+days+" days ❤️";
+}
 
-  heart.onclick = () => {
-    score++;
-    document.getElementById("score").innerText = score;
-    heart.remove();
-  };
+function confetti(){
+for(let i=0;i<80;i++){
+const c=document.createElement("div");
+c.innerHTML="❤️";
+c.style.position="fixed";
+c.style.left=Math.random()*100+"vw";
+c.style.top="-10px";
+c.style.fontSize="20px";
+c.style.animation="fall 3s linear forwards";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),3000);
+}
+}
 
-  area.appendChild(heart);
-  setTimeout(()=>heart.remove(),2000);
-}, 800);
+function replay(){
+location.reload();
+}
+
+/* mini game */
+const area=document.getElementById("gameArea");
+setInterval(()=>{
+if(!area||current!==6)return;
+const h=document.createElement("div");
+h.innerHTML="❤️";
+h.style.position="absolute";
+h.style.left=Math.random()*90+"%";
+h.style.top=Math.random()*90+"%";
+h.onclick=()=>{
+score++;
+document.getElementById("score").innerText=score;
+h.remove();
+if(score>=5)next();
+};
+area.appendChild(h);
+setTimeout(()=>h.remove(),1500);
+},700);
 </script>
 
 </body>
