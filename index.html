@@ -53,8 +53,8 @@ opacity:0;
 }
 }
 
-/* heart game */
-#gameArea{
+/* game areas */
+.area{
 height:260px;
 background:#fff0f5;
 border-radius:16px;
@@ -62,11 +62,22 @@ position:relative;
 overflow:hidden;
 }
 
-.heart{
+.heart,.circle{
 position:absolute;
-font-size:28px;
+font-size:26px;
 cursor:pointer;
 }
+
+.circle{
+width:60px;
+height:60px;
+border-radius:50%;
+background:#ff4d6d;
+}
+
+/* slider */
+.slide{display:none;font-size:18px;}
+.slide.active{display:block;}
 </style>
 </head>
 
@@ -74,42 +85,95 @@ cursor:pointer;
 
 <div class="app">
 
-<!-- START -->
+<!-- Start -->
 <div id="s0" class="screen active">
 <div class="card">
-<h2>For Laduaaaa / Cutie Pie ❤️</h2>
-<p>Tap Start</p>
-<button onclick="startApp()">Start</button>
-
-<br><br>
-
-<audio id="song" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_946498e0c4.mp3">
-</audio>
-
+<h2>Hi Laduaaaa / Cutie Pie ❤️</h2>
+<button onclick="next()">Start</button>
 </div>
 </div>
 
-<!-- QUESTION -->
+<!-- Valentine question -->
 <div id="s1" class="screen">
 <div class="card">
 <h2>Will you be my Valentine?</h2>
-<button onclick="explodeHearts(this); next();">Yes</button>
+<button onclick="explodeHearts(this); next()">Yes</button>
 <button onclick="alert('No option disabled 😄')">No</button>
 </div>
 </div>
 
-<!-- HEART GAME -->
+<!-- Who loves more -->
 <div id="s2" class="screen">
 <div class="card">
-<h2>Catch the hearts ❤️</h2>
-<p>Score: <span id="score">0</span></p>
-<div id="gameArea"></div>
+<h2>Who loves more? 😄</h2>
+<button onclick="next()">Me</button>
+<button onclick="alert('Wrong answer 😄 Try again')">You</button>
 </div>
 </div>
 
-<!-- END -->
+<!-- Always be with me -->
 <div id="s3" class="screen">
+<div class="card">
+<h2>Will you be with me always?</h2>
+<button onclick="next()">Yes ❤️</button>
+</div>
+</div>
+
+<!-- Promise screen -->
+<div id="s4" class="screen">
+<div class="card">
+<h2>My Promises ❤️</h2>
+<p>I will support you</p>
+<p>I will make you smile</p>
+<p>I will stand beside you</p>
+<p>I will love you forever</p>
+<button onclick="next()">Next</button>
+</div>
+</div>
+
+<!-- Why I love you slider -->
+<div id="s5" class="screen">
+<div class="card">
+<h2>Why I love you ❤️</h2>
+
+<div id="slide1" class="slide active">Your smile</div>
+<div id="slide2" class="slide">Your kindness</div>
+<div id="slide3" class="slide">Your voice</div>
+<div id="slide4" class="slide">Everything about you</div>
+
+<button onclick="nextSlide()">Next</button>
+</div>
+</div>
+
+<!-- Game 1 -->
+<div id="s6" class="screen">
+<div class="card">
+<h2>Catch hearts ❤️</h2>
+<p>Score: <span id="score1">0</span></p>
+<div id="area1" class="area"></div>
+</div>
+</div>
+
+<!-- Game 2 -->
+<div id="s7" class="screen">
+<div class="card">
+<h2>Tap circles 😄</h2>
+<p>Score: <span id="score2">0</span></p>
+<div id="area2" class="area"></div>
+</div>
+</div>
+
+<!-- Game 3 -->
+<div id="s8" class="screen">
+<div class="card">
+<h2>Catch falling hearts 💕</h2>
+<p>Score: <span id="score3">0</span></p>
+<div id="area3" class="area"></div>
+</div>
+</div>
+
+<!-- Ending -->
+<div id="s9" class="screen">
 <div class="card">
 <h2>I love you ❤️</h2>
 <p id="days"></p>
@@ -121,12 +185,8 @@ cursor:pointer;
 
 <script>
 let current=0;
-let score=0;
-
-function startApp(){
-document.getElementById("song").play();
-next();
-}
+let slide=1;
+let s1=0,s2=0,s3=0;
 
 function next(){
 document.getElementById("s"+current).classList.remove("active");
@@ -135,16 +195,7 @@ document.getElementById("s"+current).classList.add("active");
 counter();
 }
 
-/* love counter */
-function counter(){
-const start=new Date("May 25, 2024");
-const today=new Date();
-const days=Math.floor((today-start)/(1000*60*60*24));
-const el=document.getElementById("days");
-if(el)el.innerText="Together for "+days+" days ❤️";
-}
-
-/* confetti explosion */
+/* confetti */
 function explodeHearts(btn){
 const rect=btn.getBoundingClientRect();
 for(let i=0;i<25;i++){
@@ -160,42 +211,67 @@ setTimeout(()=>h.remove(),1200);
 }
 }
 
-/* HEART GAME (fixed) */
-const gameArea=document.getElementById("gameArea");
+/* slider */
+function nextSlide(){
+document.getElementById("slide"+slide).classList.remove("active");
+slide++;
+if(slide>4){ next(); return; }
+document.getElementById("slide"+slide).classList.add("active");
+}
 
+/* love counter */
+function counter(){
+const start=new Date("May 25, 2024");
+const today=new Date();
+const days=Math.floor((today-start)/(1000*60*60*24));
+const el=document.getElementById("days");
+if(el)el.innerText="Together for "+days+" days ❤️";
+}
+
+/* GAME 1 */
 setInterval(()=>{
-if(current!==2) return;
-
-const heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="❤️";
-heart.style.left=Math.random()*90+"%";
-heart.style.top="0px";
-
-gameArea.appendChild(heart);
-
+if(current!==6)return;
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*90+"%";
+h.style.top="0";
+area1.appendChild(h);
 let pos=0;
 const fall=setInterval(()=>{
-pos+=4;
-heart.style.top=pos+"px";
-
-if(pos>240){
-heart.remove();
-clearInterval(fall);
-}
+pos+=4; h.style.top=pos+"px";
+if(pos>240){h.remove();clearInterval(fall);}
 },25);
+h.onclick=()=>{s1++;score1.innerText=s1;h.remove();clearInterval(fall);if(s1>=5)next();}
+},900);
 
-heart.onclick=()=>{
-score++;
-document.getElementById("score").innerText=score;
-heart.remove();
-clearInterval(fall);
+/* GAME 2 */
+setInterval(()=>{
+if(current!==7)return;
+const c=document.createElement("div");
+c.className="circle";
+c.style.left=Math.random()*80+"%";
+c.style.top=Math.random()*70+"%";
+area2.appendChild(c);
+c.onclick=()=>{s2++;score2.innerText=s2;c.remove();if(s2>=5)next();}
+setTimeout(()=>c.remove(),1500);
+},900);
 
-if(score>=5){
-next();
-}
-};
-
+/* GAME 3 */
+setInterval(()=>{
+if(current!==8)return;
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*90+"%";
+h.style.top="0";
+area3.appendChild(h);
+let pos=0;
+const fall=setInterval(()=>{
+pos+=4; h.style.top=pos+"px";
+if(pos>240){h.remove();clearInterval(fall);}
+},25);
+h.onclick=()=>{s3++;score3.innerText=s3;h.remove();clearInterval(fall);if(s3>=5)next();}
 },900);
 </script>
 
