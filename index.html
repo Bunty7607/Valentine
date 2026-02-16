@@ -22,7 +22,7 @@ z-index:2;
 }
 
 .screen{display:none;}
-.active{display:block;animation:fade 0.5s ease;}
+.active{display:block;animation:fade .5s ease;}
 
 @keyframes fade{
 from{opacity:0;transform:translateY(10px);}
@@ -38,7 +38,7 @@ text-align:center;
 }
 
 button{
-padding:14px;
+padding:14px 18px;
 border:none;
 border-radius:14px;
 background:#ff4d6d;
@@ -48,31 +48,18 @@ font-size:16px;
 cursor:pointer;
 }
 
-/* promises animation */
-.promise{
+/* confetti explosion */
+.confetti{
+position:fixed;
+font-size:20px;
+animation:explode 1.2s ease-out forwards;
+}
+
+@keyframes explode{
+to{
+transform:translate(var(--x),var(--y)) rotate(360deg);
 opacity:0;
-transform:translateY(10px);
-animation:show 0.6s forwards;
 }
-@keyframes show{
-to{opacity:1;transform:translateY(0);}
-}
-
-/* slider */
-.slide{
-display:none;
-font-size:18px;
-}
-.slide.active{display:block;}
-
-/* timeline */
-.timeline{
-text-align:left;
-}
-.timeline div{
-margin:10px 0;
-padding-left:10px;
-border-left:3px solid #ff4d6d;
 }
 
 /* particle hearts */
@@ -80,7 +67,7 @@ border-left:3px solid #ff4d6d;
 position:fixed;
 font-size:18px;
 animation:float 6s linear infinite;
-opacity:0.6;
+opacity:0.5;
 z-index:0;
 }
 @keyframes float{
@@ -89,7 +76,7 @@ to{transform:translateY(-10vh);}
 }
 
 /* games */
-#gameArea,#tapArea{
+#gameArea,#tapArea,#fallArea{
 height:240px;
 background:#fff0f5;
 border-radius:16px;
@@ -101,6 +88,12 @@ overflow:hidden;
 width:60px;height:60px;border-radius:50%;
 background:#ff4d6d;position:absolute;
 }
+
+.fallHeart{
+position:absolute;
+font-size:26px;
+transition:top 1.8s linear;
+}
 </style>
 </head>
 
@@ -108,32 +101,35 @@ background:#ff4d6d;position:absolute;
 
 <div class="app">
 
-<div id="s1" class="screen active">
+<!-- MUSIC START -->
+<div id="s0" class="screen active">
 <div class="card">
-<h3>Our Chat ❤️</h3>
-<p>Hi Cutie Pie… I made something for you.</p>
-<button onclick="startApp()">Continue</button>
+<h2>For Laduaaaa / Cutie Pie ❤️</h2>
+<button onclick="playMusic()">Play Music & Start</button>
 </div>
 </div>
 
-<div id="s2" class="screen">
+<!-- Valentine Question -->
+<div id="s1" class="screen">
 <div class="card">
 <h2>Will you be my Valentine?</h2>
-<button onclick="next()">Yes</button>
+<button id="yesBtn" onclick="explodeHearts(this); next();">Yes</button>
 <button onclick="funnyNo()">No</button>
 </div>
 </div>
 
-<div id="s3" class="screen">
+<!-- Memory Quiz -->
+<div id="s2" class="screen">
 <div class="card">
-<h2>Memory Quiz</h2>
+<h2>Memory Quiz ❤️</h2>
 <p>When did we meet?</p>
 <button onclick="wrong()">2023</button>
 <button onclick="correct()">25 May 2024</button>
 </div>
 </div>
 
-<div id="s4" class="screen">
+<!-- Game 1 -->
+<div id="s3" class="screen">
 <div class="card">
 <h2>Catch hearts ❤️</h2>
 <p>Score: <span id="score">0</span></p>
@@ -141,7 +137,8 @@ background:#ff4d6d;position:absolute;
 </div>
 </div>
 
-<div id="s5" class="screen">
+<!-- Game 2 -->
+<div id="s4" class="screen">
 <div class="card">
 <h2>Tap circles 😄</h2>
 <p>Score: <span id="tapScore">0</span></p>
@@ -149,57 +146,38 @@ background:#ff4d6d;position:absolute;
 </div>
 </div>
 
+<!-- Game 3 -->
+<div id="s5" class="screen">
+<div class="card">
+<h2>Catch falling hearts 💕</h2>
+<p>Score: <span id="fallScore">0</span></p>
+<div id="fallArea"></div>
+</div>
+</div>
+
+<!-- Timeline -->
 <div id="s6" class="screen">
 <div class="card">
-<h2>Future Promises ❤️</h2>
-<p class="promise" style="animation-delay:0.3s;">I will support you</p>
-<p class="promise" style="animation-delay:0.8s;">I will protect you</p>
-<p class="promise" style="animation-delay:1.3s;">I will make you smile</p>
-<p class="promise" style="animation-delay:1.8s;">I will love you forever</p>
+<h2>Our Timeline ❤️</h2>
+<p>25 May 2024 — We met</p>
+<p>First long talk</p>
+<p>First laugh together</p>
 <button onclick="next()">Next</button>
 </div>
 </div>
 
+<!-- Ending -->
 <div id="s7" class="screen">
 <div class="card">
-<h2>Why I love you ❤️</h2>
-<div id="slide1" class="slide active">Your smile</div>
-<div id="slide2" class="slide">Your kindness</div>
-<div id="slide3" class="slide">Your voice</div>
-<div id="slide4" class="slide">Everything about you</div>
-<button onclick="nextSlide()">Next</button>
-</div>
-</div>
-
-<div id="s8" class="screen">
-<div class="card timeline">
-<h2>Our Timeline ❤️</h2>
-<div>25 May 2024 — We met</div>
-<div>First long conversation</div>
-<div>First time we laughed together</div>
-<div>Today — Still together ❤️</div>
-<button onclick="next()">Next</button>
-</div>
-</div>
-
-<div id="s9" class="screen">
-<div class="card">
-<h2>I love you Laduaaaa / Cutie Pie ❤️</h2>
-<p id="days"></p>
-<button onclick="next()">Finish</button>
-</div>
-</div>
-
-<div id="s10" class="screen">
-<div class="card">
 <h1>Forever Us ❤️</h1>
+<p id="days"></p>
 <button onclick="replay()">Replay</button>
 </div>
 </div>
 
 </div>
 
-<!-- hidden music -->
+<!-- music -->
 <div id="music" style="display:none;">
 <iframe width="0" height="0"
 src="https://www.youtube.com/embed/P8PWN1OmZOA?autoplay=1&loop=1&playlist=P8PWN1OmZOA"
@@ -208,9 +186,9 @@ allow="autoplay">
 </div>
 
 <script>
-let current=1,score=0,tapScore=0,slide=1;
+let current=0,score=0,tapScore=0,fallScore=0;
 
-function startApp(){
+function playMusic(){
 document.getElementById("music").style.display="block";
 next();
 }
@@ -222,7 +200,29 @@ document.getElementById("s"+current).classList.add("active");
 counter();
 }
 
-function funnyNo(){ alert("No option disabled 😄"); }
+function funnyNo(){
+alert("No option disabled 😄");
+}
+
+/* EXPLOSION FROM BUTTON */
+function explodeHearts(btn){
+const rect=btn.getBoundingClientRect();
+const x=rect.left+rect.width/2;
+const y=rect.top+rect.height/2;
+
+for(let i=0;i<30;i++){
+const h=document.createElement("div");
+h.className="confetti";
+h.innerHTML="❤️";
+h.style.left=x+"px";
+h.style.top=y+"px";
+h.style.setProperty("--x",(Math.random()*300-150)+"px");
+h.style.setProperty("--y",(Math.random()*300-150)+"px");
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),1200);
+}
+}
+
 function correct(){ next(); }
 function wrong(){ alert("Try again 😄"); }
 
@@ -236,15 +236,7 @@ if(el)el.innerText="Together for "+days+" days ❤️";
 
 function replay(){ location.reload(); }
 
-/* slider */
-function nextSlide(){
-document.getElementById("slide"+slide).classList.remove("active");
-slide++;
-if(slide>4){ next(); return; }
-document.getElementById("slide"+slide).classList.add("active");
-}
-
-/* particle hearts */
+/* background hearts */
 setInterval(()=>{
 const h=document.createElement("div");
 h.className="particle";
@@ -252,42 +244,48 @@ h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),6000);
-},800);
+},900);
 
-/* heart game */
+/* Game 1 */
 setInterval(()=>{
-if(current!==4)return;
+if(current!==3)return;
 const h=document.createElement("div");
 h.innerHTML="❤️";
 h.style.position="absolute";
 h.style.left=Math.random()*90+"%";
-h.style.top="0px";
+h.style.top="0";
 h.style.transition="top 1.5s linear";
-document.getElementById("gameArea").appendChild(h);
+gameArea.appendChild(h);
 setTimeout(()=>h.style.top="200px",50);
-
-h.onclick=()=>{
-score++;document.getElementById("score").innerText=score;
-h.remove(); if(score>=5)next();
-};
+h.onclick=()=>{score++;scoreEl.innerText=score;h.remove();if(score>=5)next();}
 setTimeout(()=>h.remove(),2000);
 },700);
 
-/* tap game */
+/* Game 2 */
 setInterval(()=>{
-if(current!==5)return;
+if(current!==4)return;
 const c=document.createElement("div");
 c.className="tapCircle";
 c.style.left=Math.random()*80+"%";
 c.style.top=Math.random()*70+"%";
-c.onclick=()=>{
-tapScore++;
-document.getElementById("tapScore").innerText=tapScore;
-c.remove(); if(tapScore>=5)next();
-};
-document.getElementById("tapArea").appendChild(c);
+tapArea.appendChild(c);
+c.onclick=()=>{tapScore++;tapScoreEl.innerText=tapScore;c.remove();if(tapScore>=5)next();}
 setTimeout(()=>c.remove(),1500);
 },900);
+
+/* Game 3 */
+setInterval(()=>{
+if(current!==5)return;
+const f=document.createElement("div");
+f.className="fallHeart";
+f.innerHTML="💖";
+f.style.left=Math.random()*90+"%";
+f.style.top="0";
+fallArea.appendChild(f);
+setTimeout(()=>f.style.top="200px",50);
+f.onclick=()=>{fallScore++;fallScoreEl.innerText=fallScore;f.remove();if(fallScore>=5)next();}
+setTimeout(()=>f.remove(),2000);
+},800);
 </script>
 
 </body>
